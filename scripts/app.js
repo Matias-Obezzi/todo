@@ -103,23 +103,23 @@ document.addEventListener("click", (e) => {
             // Borra la tarea, si es q el usuario confirma la accion
             if(confirm('Esta seguro de que desea eliminar la tarea?')){
                 tasks.splice(index, 1) // Elimina la tarea elegida
-                show(tasks) // Mostramos las tareas
+                filter() // Mostramos las tareas
                 save() // Guardamos los cambios
             }
             break
         case 'state':
             // Cambia el estado de la tarea
             tasks[index].done =  !tasks[index].done // Cambiamos el estado de la tarea
-            show(tasks) // Mostramos las tareas
+            filter() // Muestra las tareas
             save() // Guardamos los cambios
             break
     }
 })
 
 // Da formato a la tarea
-function format(task, index){
+function format(task){
     const newTask = document.createElement("div") // Crea un elemento de tipo div
-    newTask.setAttribute('data-task', index) // Establecemos el atributo data-task con el valor del indice en el array
+    newTask.setAttribute('data-task', tasks.indexOf(task)) // Establecemos el atributo data-task con el valor del indice en el array
     newTask.setAttribute('data-action', 'state') // Establecemos el atributo data-accion con la accion a realizar frente a un click (chiche nuestro)
     newTask.classList += `card clicky text-light border-light ${task.done ? 'bg-success' : 'bg-danger'}` // agrega la clase card a sus clases
     newTask.innerHTML = `
@@ -151,8 +151,8 @@ function show(array, search){
         return // Cortamos la ejecucion para q no haga lo q sigue
     }
     if(!container.classList.contains('card-columns')) container.classList.add('card-columns') // Agregamos la clase card-columns al mostrador de tareas
-    array.forEach((tarea, index) => { // Para cada tarea en el array de tareas hacer lo q este entre {}
-        container.append(format(tarea, index)) // Agregamos la tarea al mostrador de tareas (se ejecuta 1 vez por cada tarea)
+    array.forEach((tarea) => { // Para cada tarea en el array de tareas hacer lo q este entre {}
+        container.append(format(tarea)) // Agregamos la tarea al mostrador de tareas (se ejecuta 1 vez por cada tarea)
     })
 }
 
@@ -166,7 +166,7 @@ function filter(){
         (state == null || t.done == state) &&
         (!search || t.title.toLowerCase().includes(search.toLowerCase()) ||
         t.description.toLowerCase().includes(search.toLowerCase()))
-    ), search || state)
+    ), search || state != null)
 }
 
 // Busca el atributo solicitado en el elemento o sus padres
