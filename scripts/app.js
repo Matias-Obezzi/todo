@@ -181,7 +181,7 @@ function save(){
 
 // Carga de la memoria local las tareas
 function load(){
-    return JSON.parse(localStorage.getItem('tasks'))
+    return localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : []
 }
 
 // Aca vamos a guardar las tareas del usuario
